@@ -14,18 +14,18 @@ DROP TABLE IF EXISTS pets;
 DROP TABLE IF EXISTS owners;
 
 CREATE TABLE owners (
-                        id      INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-                        name    VARCHAR(30) NOT NULL,
-                        address VARCHAR(255) DEFAULT 'Undisclosed'
+    id      INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    name    VARCHAR(30) NOT NULL,
+    address VARCHAR(255) DEFAULT 'Undisclosed'
 );
 
 CREATE TABLE pets (
-                      id       INT UNSIGNED AUTO_INCREMENT,
-                      name     VARCHAR(30) NOT NULL,
-                      owner_id INT UNSIGNED,
-                      age      INT,
-                      PRIMARY KEY (id),
-                      FOREIGN KEY (owner_id) REFERENCES owners (id) /* ON DELETE RESTRICT | CASCADE | SET NULL */
+  id       INT UNSIGNED AUTO_INCREMENT,
+  name     VARCHAR(30) NOT NULL,
+  owner_id INT UNSIGNED,
+  age      INT,
+  PRIMARY KEY (id),
+  FOREIGN KEY (owner_id) REFERENCES owners (id) /* ON DELETE RESTRICT | CASCADE | SET NULL */
 );
 
 # seed tables
@@ -58,10 +58,13 @@ DELETE FROM owners WHERE id = 1;
 # ========= MINI EXERCISE 1
 
 # Using the owners and pets table, display the pet age, pet name, and owner name.
-SELECT
-FROM
-WHERE
-JOIN BY
+SELECT p.age, p.name, o.name
+FROM pets AS p, owners AS o
+JOIN owners ON o.id = p.owner_id;
+
+select p.age, p.name, o.name
+from pets as p
+join owners as o on p.owner_id = o.id;
 
 
 # ========= BASIC JOINS WITH ALIASES
@@ -92,18 +95,18 @@ DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS roles;
 
 CREATE TABLE roles (
-                       id   INT UNSIGNED NOT NULL AUTO_INCREMENT,
-                       name VARCHAR(100) NOT NULL,
-                       PRIMARY KEY (id)
+   id   INT UNSIGNED NOT NULL AUTO_INCREMENT,
+   name VARCHAR(100) NOT NULL,
+   PRIMARY KEY (id)
 );
 
 CREATE TABLE users (
-                       id      INT UNSIGNED NOT NULL AUTO_INCREMENT,
-                       name    VARCHAR(100) NOT NULL,
-                       email   VARCHAR(100) NOT NULL,
-                       role_id INT UNSIGNED DEFAULT NULL,
-                       PRIMARY KEY (id),
-                       FOREIGN KEY (role_id) REFERENCES roles (id)
+   id      INT UNSIGNED NOT NULL AUTO_INCREMENT,
+   name    VARCHAR(100) NOT NULL,
+   email   VARCHAR(100) NOT NULL,
+   role_id INT UNSIGNED DEFAULT NULL,
+   PRIMARY KEY (id),
+   FOREIGN KEY (role_id) REFERENCES roles (id)
 );
 
 INSERT INTO roles (name)
@@ -135,15 +138,15 @@ FROM users;
 # output user name and role for all records with a non-null user name and role name
 
 SELECT users.name, roles.name FROM users
-                                       JOIN roles -- same as INNER JOIN
-                                            ON roles.id = users.role_id;
+JOIN roles -- same as INNER JOIN
+ON roles.id = users.role_id;
 
 
 # output user name and their role name for all matches and all users regardless of null roles
 
 SELECT users.name, roles.name
 FROM users LEFT JOIN roles
-                     ON roles.id = users.role_id;
+ON roles.id = users.role_id;
 
 
 # output user name and role for all non-null matches and all roles with null users
@@ -211,8 +214,8 @@ GROUP BY o.address;
 
 # Output the "{NAME_OF_PET} is owned by {NAME_OF_OWNER}"
 SELECT CONCAT(pets.name, ' is owned by ', owners.name) AS Message FROM pets
-                                                                           JOIN owners
-                                                                                ON owners.id = pets.owner_id;
+JOIN owners
+ON owners.id = pets.owner_id;
 
 
 # Output the total age each pet owner's pets
@@ -227,3 +230,17 @@ JOIN pets ON pets.owner_id = owners.id
 GROUP BY owners.address
 ORDER BY COUNT(*) ASC, owners.address
 LIMIT 1;
+
+show databases;
+show table status;
+show tables;
+
+
+CREATE TABLE movies (
+                        id INT NOT NULL AUTO_INCREMENT,
+                        name VARCHAR(100) NOT NULL,
+                        time_in_minutes INT NOT NULL,
+                        description TEXT NOT NULL
+);
+
+show table movies;
